@@ -10,6 +10,12 @@ body {
 	background: rgb(75, 89, 110) !important;
 }
 
+.logo {
+	margin: 0 10px 0 70px;
+	width: 40px;
+	opacity: 0.9;
+}
+
 #bootstrap_h1 {
 	font-family: Exo, sans-serif;
 	margin-bottom: 2%;
@@ -149,12 +155,24 @@ body {
 }
 
 /* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
+@media only screen and (max-width: 650px){
+	.logo {
+		margin: 0;
+		width: 35px;
+	}
+	#jl {
+		font-size: 1rem;
+		margin-top: 30px;
+		margin-bottom: 10px;
+	}
   .modal-content {
-    width: 100%;
+		width: 100%;
+		/* vertical-align: middle;
+		display: inline-block; */
 	}
 	.close {
-		font-size: 40px;
-		right: 15px;
+		font-size: 60px;
+		right: 20px;
+		top: 20px;
 	}
 } 

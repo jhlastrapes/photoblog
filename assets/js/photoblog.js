@@ -64,7 +64,13 @@ function cyclePhotos(){
   var checkBlurred = String(blurredBG.classList.value);
   if(checkBlurred === "bodyModalBG"){  
     // keeps track of current image
-    currentImage = modalImg.src.substring(34);
+    // for web use to resolve issue involving occasional "www." ommission
+    if(modalImg.src.slice(7, 11) === "www."){
+      currentImage = modalImg.src.substring(38);
+    }
+    else {
+      currentImage = modalImg.src.substring(34);
+    };
     // looks for image adress in images array
     for(var i = 0; i < images.length; i++){
       if(images[i] === currentImage){
@@ -73,25 +79,26 @@ function cyclePhotos(){
           var j = e.data.id;
           // right arrow key event
           if (e.which === 39 && currentImage !== images[12]){
-            // change modalImg.src to next photo as well as caption
-            modalImg.src = images[j+1];
-            captionText.innerHTML = captions[j+1];
-            // remove event handler for next cycle to not exponentially add event handlers and slow down page 
-            $("body").off("keyup");
-            cyclePhotos();
+            handleCycleImages(j+1);
           }
           // left arrow key event
           else if (e.which === 37 && currentImage !== images[0]){
-            modalImg.src = images[j-1];
-            captionText.innerHTML = captions[j-1];
-            $("body").off("keyup");
-            cyclePhotos();
+            handleCycleImages(j-1);
           };
         }); 
       };
     };
   };
 };
+
+function handleCycleImages(backOrForward){
+  // change modalImg.src to next photo as well as caption
+  modalImg.src = images[backOrForward];
+  captionText.innerHTML = captions[backOrForward];
+  // remove event handler for next cycle to not exponentially add event handlers and slow down page 
+  $("body").off("keyup");
+  cyclePhotos();
+}
 
 // x-button functionality in modal
 function xClick(){
