@@ -71,9 +71,10 @@ function cyclePhotos(){
     else {
       currentImage = modalImg.src.substring(34);
     };
-    // looks for image adress in images array
+    // looks for image address in images array
     for(var i = 0; i < images.length; i++){
-      if(images[i] === currentImage){
+      if(images[i] === currentImage){    
+        // detectswipe('img01', myFunction);
         $("body").on("keyup", {id: i}, function(e){
           // retrieve i after jquery function and reassign to variable "j"
           var j = e.data.id;
@@ -86,6 +87,20 @@ function cyclePhotos(){
             handleCycleImages(j-1);
           };
         }); 
+        // left arrow mouse functionality          
+        $(".leftArrow").on("click", {id: i}, function(e){
+          var j = e.data.id;
+          if (currentImage !== images[0]){
+            handleCycleImages(j-1);
+          };
+        });
+        // right arrow mouse functionality
+        $(".rightArrow").on("click", {id: i}, function(e){
+          var j = e.data.id;
+          if (currentImage !== images[12]){
+            handleCycleImages(j+1);            
+          };
+        });
       };
     };
   };
@@ -97,8 +112,63 @@ function handleCycleImages(backOrForward){
   captionText.innerHTML = captions[backOrForward];
   // remove event handler for next cycle to not exponentially add event handlers and slow down page 
   $("body").off("keyup");
+  // removes arrow event handlers
+  $(".leftArrow").off("click");
+  $(".rightArrow").off("click");
   cyclePhotos();
 }
+
+// function detectswipe(el,func) {
+//   swipe_det = new Object();
+//   swipe_det.sX = 0; swipe_det.sY = 0; swipe_det.eX = 0; swipe_det.eY = 0;
+//   var min_x = 30;  //min x swipe for horizontal swipe
+//   var max_x = 30;  //max x difference for vertical swipe
+//   var min_y = 50;  //min y swipe for vertical swipe
+//   var max_y = 60;  //max y difference for horizontal swipe
+//   var direc = "";
+//   ele = document.getElementById(el);
+//   ele.addEventListener('touchstart',function(e){
+//     var t = e.touches[0];
+//     swipe_det.sX = t.screenX; 
+//     swipe_det.sY = t.screenY;
+//   },false);
+//   ele.addEventListener('touchmove',function(e){
+//     e.preventDefault();
+//     var t = e.touches[0];
+//     swipe_det.eX = t.screenX; 
+//     swipe_det.eY = t.screenY;    
+//   },false);
+//   ele.addEventListener('touchend',function(e){
+//     //horizontal detection
+//     if ((((swipe_det.eX - min_x > swipe_det.sX) || (swipe_det.eX + min_x < swipe_det.sX)) && ((swipe_det.eY < swipe_det.sY + max_y) && (swipe_det.sY > swipe_det.eY - max_y) && (swipe_det.eX > 0)))) {
+//       if(swipe_det.eX > swipe_det.sX) direc = "r";
+//       else direc = "l";
+//     }
+//     vertical detection
+//     else if ((((swipe_det.eY - min_y > swipe_det.sY) || (swipe_det.eY + min_y < swipe_det.sY)) && ((swipe_det.eX < swipe_det.sX + max_x) && (swipe_det.sX > swipe_det.eX - max_x) && (swipe_det.eY > 0)))) {
+//       if(swipe_det.eY > swipe_det.sY) direc = "d";
+//       else direc = "u";
+//     }
+
+//     if (direc != "") {
+//       if(typeof func == 'function') func(el,direc);
+//     }
+//     direc = "";
+//     swipe_det.sX = 0; swipe_det.sY = 0; swipe_det.eX = 0; swipe_det.eY = 0;
+//   },false);  
+// }
+
+// function myFunction(el,d) {  
+//   alert("you swiped on element with id '"+el+"' to "+d+" direction");
+//   alert(String(d));
+//   if(d === r){
+//     handleCycleImages(i+1);
+//   }
+//   else if(String(d) === "l"){
+//     handleCycleImages(i-1);
+//   };
+// };
+
 
 // x-button functionality in modal
 function xClick(){
