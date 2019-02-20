@@ -173,7 +173,7 @@ body {
 	position: absolute;
 	top: 0px;
 	left: 15px;
-	height: 98%;
+	height: 36%;
 	width: 10%;
 	color: #ffffff;
   font-size: 80px;
@@ -181,8 +181,8 @@ body {
 	transition: 0.3s;
 	text-align: center;
 	z-index: 3;
-	opacity: 0.3;
-	margin: 3%;
+	opacity: 0.4;
+	margin: 14% 3%;
 }
 
 .leftArrow:hover {
@@ -193,7 +193,7 @@ body {
 	position: absolute;
 	top: 0px;
 	right: 15px;
-	height: 98%;
+	height: 36%;
 	width: 10%;
 	color: #ffffff;
   font-size: 80px;
@@ -201,8 +201,8 @@ body {
 	transition: 0.3s;
 	text-align: center;
 	z-index: 3;
-	opacity: 0.3;
-	margin: 3%;
+	opacity: 0.4;
+	margin: 14% 3%;
 }
 
 .rightArrow:hover {
@@ -211,7 +211,7 @@ body {
 
 .fas {
 	position: relative;
-	top: 35%;
+	top: 28%;
 }
 
 /* 100% Image Width on Smaller Screens */

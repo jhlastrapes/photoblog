@@ -3,6 +3,8 @@
 
 var modal = document.getElementById('myModal');
 var span = document.getElementsByClassName("close")[0];
+var leftArrow = document.getElementsByClassName("fa-angle-left")[0];
+var rightArrow = document.getElementsByClassName("fa-angle-right")[0];
 var captionText = document.getElementById("caption");
 var modalImg = document.getElementsByClassName("modal-content")[0];
 var blurredBG = document.getElementById("blurredBG");
@@ -37,7 +39,38 @@ var captions = [
   "Venice, Italy",
   "Burano, Italy",
   "Independence Pass, CO"
-]
+];
+
+// pre-loads images so image sizes in sizeModal() will retrieve properly 
+if (document.images) {
+  img1 = new Image();
+  img2 = new Image();
+  img3 = new Image();
+  img4 = new Image();
+  img5 = new Image();
+  img6 = new Image();
+  img7 = new Image();
+  img8 = new Image();
+  img9 = new Image();
+  img10 = new Image();
+  img11 = new Image();
+  img12 = new Image();
+  img13 = new Image();
+
+  img1.src = "images/colorado_1F.jpg";
+  img2.src = "images/utah_1F.jpg";
+  img3.src = "images/utah_2F.jpg";
+  img4.src = "images/venice_1F.jpg";
+  img5.src = "images/colorado_4F.jpg";
+  img6.src = "images/venice_2F.jpg";
+  img7.src = "images/burano_1F.jpg";
+  img8.src = "images/italyF.jpg";
+  img9.src = "images/utah_3F.jpg";
+  img10.src = "images/colorado_2F.jpg";
+  img11.src = "images/venice_3F.jpg";
+  img12.src = "images/burano_2F.jpg";
+  img13.src = "images/colorado_3F.jpg";
+};
 
 
 // function for modal
@@ -63,7 +96,6 @@ function cyclePhotos(){
   // checks if on modal page
   var checkBlurred = String(blurredBG.classList.value);
   if(checkBlurred === "bodyModalBG"){  
-    // keeps track of current image
     // for web use to resolve issue involving occasional "www." ommission
     // if(modalImg.src.slice(7, 11) === "www."){
     //   currentImage = modalImg.src.substring(38);
@@ -72,7 +104,21 @@ function cyclePhotos(){
     //   currentImage = modalImg.src.substring(34);
     // };
     // detectswipe('img01',myfunction);
+    // keeps track of current image
     currentImage = modalImg.src.substring(53);
+    // hides left or right arrow if on first or last image on non-mobile pages
+    if (window.innerWidth > 500){
+      if (currentImage === images[images.length-1]){
+        rightArrow.style.visibility = "hidden";
+      }
+      else if (currentImage === images[0]){
+        leftArrow.style.visibility = "hidden";
+      }
+      else {
+        leftArrow.style.visibility = "visible";
+        rightArrow.style.visibility = "visible";
+      };
+    };
     // looks for image adress in images array
     for(var i = 0; i < images.length; i++){
       if(images[i] === currentImage){
@@ -180,8 +226,6 @@ function openFull(){
 // }
 
 
-
-
 // makes photo black and white on click
 $("#images div img").on("mousedown", function(){
   $(this).addClass("clickDown");
@@ -191,15 +235,3 @@ $("#images div img").on("mouseup", function(){
   $(this).removeClass("clickDown");  
   modalFunction(this);
 });
-
-// $("#me").on("mousedown", function(){
-//   $(this).addClass("clickDown");
-// });
-
-// $("#me").on("mouseup", function(){
-//   $(this).removeClass("clickDown");  
-//   modalFunction(this);
-// });
-
-
-

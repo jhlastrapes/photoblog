@@ -3,6 +3,8 @@
 
 var modal = document.getElementById('myModal');
 var span = document.getElementsByClassName("close")[0];
+var leftArrow = document.getElementsByClassName("fa-angle-left")[0];
+var rightArrow = document.getElementsByClassName("fa-angle-right")[0];
 var captionText = document.getElementById("caption");
 var modalImg = document.getElementsByClassName("modal-content")[0];
 var blurredBG = document.getElementById("blurredBG");
@@ -37,7 +39,38 @@ var captions = [
   "Venice, Italy",
   "Burano, Italy",
   "Independence Pass, CO"
-]
+];
+
+// pre-loads images so image sizes in sizeModal() will retrieve properly 
+if (document.images) {
+  img1 = new Image();
+  img2 = new Image();
+  img3 = new Image();
+  img4 = new Image();
+  img5 = new Image();
+  img6 = new Image();
+  img7 = new Image();
+  img8 = new Image();
+  img9 = new Image();
+  img10 = new Image();
+  img11 = new Image();
+  img12 = new Image();
+  img13 = new Image();
+
+  img1.src = "images/colorado_1F.jpg";
+  img2.src = "images/utah_1F.jpg";
+  img3.src = "images/utah_2F.jpg";
+  img4.src = "images/venice_1F.jpg";
+  img5.src = "images/colorado_4F.jpg";
+  img6.src = "images/venice_2F.jpg";
+  img7.src = "images/burano_1F.jpg";
+  img8.src = "images/italyF.jpg";
+  img9.src = "images/utah_3F.jpg";
+  img10.src = "images/colorado_2F.jpg";
+  img11.src = "images/venice_3F.jpg";
+  img12.src = "images/burano_2F.jpg";
+  img13.src = "images/colorado_3F.jpg";
+};
 
 
 // function for modal
@@ -63,7 +96,6 @@ function cyclePhotos(){
   // checks if on modal page
   var checkBlurred = String(blurredBG.classList.value);
   if(checkBlurred === "bodyModalBG"){  
-    // keeps track of current image
     // for web use to resolve issue involving occasional "www." ommission
     if(modalImg.src.slice(7, 11) === "www."){
       currentImage = modalImg.src.substring(38);
@@ -71,10 +103,26 @@ function cyclePhotos(){
     else {
       currentImage = modalImg.src.substring(34);
     };
-    // looks for image address in images array
+    detectswipe('img01',myfunction);
+    // keeps track of current image
+    // currentImage = modalImg.src.substring(53);
+    // hides left or right arrow if on first or last image on non-mobile pages
+    if (window.innerWidth > 500){
+      if (currentImage === images[images.length-1]){
+        rightArrow.style.visibility = "hidden";
+      }
+      else if (currentImage === images[0]){
+        leftArrow.style.visibility = "hidden";
+      }
+      else {
+        leftArrow.style.visibility = "visible";
+        rightArrow.style.visibility = "visible";
+      };
+    };
+    // looks for image adress in images array
     for(var i = 0; i < images.length; i++){
-      if(images[i] === currentImage){    
-        // detectswipe('img01', myFunction);
+      if(images[i] === currentImage){
+
         $("body").on("keyup", {id: i}, function(e){
           // retrieve i after jquery function and reassign to variable "j"
           var j = e.data.id;
@@ -85,8 +133,8 @@ function cyclePhotos(){
           // left arrow key event
           else if (e.which === 37 && currentImage !== images[0]){
             handleCycleImages(j-1);
-          };
-        }); 
+          };  
+        });
         // left arrow mouse functionality          
         $(".leftArrow").on("click", {id: i}, function(e){
           var j = e.data.id;
@@ -118,6 +166,21 @@ function handleCycleImages(backOrForward){
   cyclePhotos();
 }
 
+// x-button functionality in modal
+function xClick(){
+  span.onclick = function(){
+    modal.style.display = "none";
+    blurredBG.classList.remove("bodyModalBG");
+    // removes event listener to prevent multiple windows
+    modalImg.removeEventListener("click", openFull);
+  };
+};
+
+// name of function necessary to use "removeEventListener" in xClick() function
+function openFull(){
+  window.open(currentImage);
+};
+
 // function detectswipe(el,func) {
 //   swipe_det = new Object();
 //   swipe_det.sX = 0; swipe_det.sY = 0; swipe_det.eX = 0; swipe_det.eY = 0;
@@ -144,7 +207,7 @@ function handleCycleImages(backOrForward){
 //       if(swipe_det.eX > swipe_det.sX) direc = "r";
 //       else direc = "l";
 //     }
-//     vertical detection
+//     //vertical detection
 //     else if ((((swipe_det.eY - min_y > swipe_det.sY) || (swipe_det.eY + min_y < swipe_det.sY)) && ((swipe_det.eX < swipe_det.sX + max_x) && (swipe_det.sX > swipe_det.eX - max_x) && (swipe_det.eY > 0)))) {
 //       if(swipe_det.eY > swipe_det.sY) direc = "d";
 //       else direc = "u";
@@ -158,33 +221,9 @@ function handleCycleImages(backOrForward){
 //   },false);  
 // }
 
-// function myFunction(el,d) {  
+// function myfunction(el,d) {
 //   alert("you swiped on element with id '"+el+"' to "+d+" direction");
-//   alert(String(d));
-//   if(d === r){
-//     handleCycleImages(i+1);
-//   }
-//   else if(String(d) === "l"){
-//     handleCycleImages(i-1);
-//   };
-// };
-
-
-// x-button functionality in modal
-function xClick(){
-  span.onclick = function(){
-    modal.style.display = "none";
-    blurredBG.classList.remove("bodyModalBG");
-    // removes event listener to prevent multiple windows
-    modalImg.removeEventListener("click", openFull);
-  };
-};
-
-// name of function necessary to use "removeEventListener" in xClick() function
-function openFull(){
-  window.open(currentImage);
-};
-
+// }
 
 
 // makes photo black and white on click
@@ -196,15 +235,3 @@ $("#images div img").on("mouseup", function(){
   $(this).removeClass("clickDown");  
   modalFunction(this);
 });
-
-// $("#me").on("mousedown", function(){
-//   $(this).addClass("clickDown");
-// });
-
-// $("#me").on("mouseup", function(){
-//   $(this).removeClass("clickDown");  
-//   modalFunction(this);
-// });
-
-
-
