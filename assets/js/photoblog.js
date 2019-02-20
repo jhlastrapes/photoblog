@@ -103,7 +103,7 @@ function cyclePhotos(){
     else {
       currentImage = modalImg.src.substring(34);
     };
-    detectswipe('img01',myfunction);
+    // detectswipe('img01',myfunction);
     // keeps track of current image
     // currentImage = modalImg.src.substring(53);
     // hides left or right arrow if on first or last image on non-mobile pages
