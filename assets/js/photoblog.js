@@ -10,6 +10,22 @@ var modalImg = document.getElementsByClassName("modal-content")[0];
 var blurredBG = document.getElementById("blurredBG");
 
 var images = [
+  "images/colorado_1m.jpg",
+  "images/utah_1m.jpg",
+  "images/utah_2m.jpg",
+  "images/venice_1m.jpg",
+  "images/colorado_4m.jpg",
+  "images/venice_2m.jpg",
+  "images/burano_1m.jpg",
+  "images/italym.jpg",
+  "images/utah_3m.jpg",
+  "images/colorado_2m.jpg",
+  "images/venice_3m.jpg",
+  "images/burano_2m.jpg",
+  "images/colorado_3m.jpg",
+];
+
+var imagesFull = [
   "images/colorado_1F.jpg",
   "images/utah_1F.jpg",
   "images/utah_2F.jpg",
@@ -41,43 +57,12 @@ var captions = [
   "Independence Pass, CO"
 ];
 
-// pre-loads images so image sizes in sizeModal() will retrieve properly 
-if (document.images) {
-  img1 = new Image();
-  img2 = new Image();
-  img3 = new Image();
-  img4 = new Image();
-  img5 = new Image();
-  img6 = new Image();
-  img7 = new Image();
-  img8 = new Image();
-  img9 = new Image();
-  img10 = new Image();
-  img11 = new Image();
-  img12 = new Image();
-  img13 = new Image();
-
-  img1.src = "images/colorado_1F.jpg";
-  img2.src = "images/utah_1F.jpg";
-  img3.src = "images/utah_2F.jpg";
-  img4.src = "images/venice_1F.jpg";
-  img5.src = "images/colorado_4F.jpg";
-  img6.src = "images/venice_2F.jpg";
-  img7.src = "images/burano_1F.jpg";
-  img8.src = "images/italyF.jpg";
-  img9.src = "images/utah_3F.jpg";
-  img10.src = "images/colorado_2F.jpg";
-  img11.src = "images/venice_3F.jpg";
-  img12.src = "images/burano_2F.jpg";
-  img13.src = "images/colorado_3F.jpg";
-};
-
 
 // function for modal
 function modalFunction(arg){
   modal.style.display = "block";
   // grabs full size photo
-  imageSource = [arg.src.slice(0, -4), 'F', arg.src.slice(-4)].join('');
+  imageSource = [arg.src.slice(0, -4), 'm', arg.src.slice(-4)].join('');
   // blurs background
   blurredBG.classList.add("bodyModalBG");
   // assigns the image URL to the modalImg .src attribute
@@ -178,7 +163,7 @@ function xClick(){
 
 // name of function necessary to use "removeEventListener" in xClick() function
 function openFull(){
-  window.open(currentImage);
+  window.open([modalImg.src.slice(0, -5), 'F', modalImg.src.slice(-4)].join(''));
 };
 
 // function detectswipe(el,func) {
@@ -235,3 +220,35 @@ $("#images div img").on("mouseup", function(){
   $(this).removeClass("clickDown");  
   modalFunction(this);
 });
+
+
+// pre-loads images so image sizes in sizeModal() will retrieve properly 
+if (document.images) {
+  img1 = new Image();
+  img2 = new Image();
+  img3 = new Image();
+  img4 = new Image();
+  img5 = new Image();
+  img6 = new Image();
+  img7 = new Image();
+  img8 = new Image();
+  img9 = new Image();
+  img10 = new Image();
+  img11 = new Image();
+  img12 = new Image();
+  img13 = new Image();
+
+  img1.src = "images/colorado_1m.jpg";
+  img2.src = "images/utah_1m.jpg";
+  img3.src = "images/utah_2m.jpg";
+  img4.src = "images/venice_1m.jpg";
+  img5.src = "images/colorado_4m.jpg";
+  img6.src = "images/venice_2m.jpg";
+  img7.src = "images/burano_1m.jpg";
+  img8.src = "images/italym.jpg";
+  img9.src = "images/utah_3m.jpg";
+  img10.src = "images/colorado_2m.jpg";
+  img11.src = "images/venice_3m.jpg";
+  img12.src = "images/burano_2m.jpg";
+  img13.src = "images/colorado_3m.jpg";
+};
