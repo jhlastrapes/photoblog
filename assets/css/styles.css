@@ -127,6 +127,22 @@ body {
 	box-shadow: 0 5px 15px rgba(0,0,0,.7);
 }
 
+/* Mobile Images */
+#mobileContainer {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+#mobileContainer img {
+	margin: auto;
+	max-height: 95vh;
+	max-width: 100%;
+	width: auto;
+	border-radius: 0;
+	box-shadow: 0 5px 15px rgba(0,0,0,.7);
+}
+
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
 #caption {
   margin: auto;
@@ -232,9 +248,10 @@ body {
 		width: 100%;
 	}
 	.close {
-		font-size: 50px;
-		right: 10px;
-		top: 10%;
+		position: fixed;
+		font-size: 70px;
+		right: 5%;
+		top: 5%;
 	}
 	.leftArrow {
 		width: 22%;
@@ -263,3 +280,20 @@ body {
 		margin: 5px;
 	}
 } 
+
+/* Landscape mobile devices */
+@media only screen and (max-height: 450px){
+	.modal {
+		padding-top: 1%;
+		padding-bottom: 2.5%;
+	}
+	.fas {
+		visibility: hidden !important;
+	}
+	.close {
+		position: fixed;
+		font-size: 70px;
+		right: 5%;
+		top: 5%;
+	}
+}

@@ -2,12 +2,18 @@
 
 
 var modal = document.getElementById('myModal');
-var span = document.getElementsByClassName("close")[0];
+var closeBtn = document.getElementsByClassName("close")[0];
 var leftArrow = document.getElementsByClassName("fa-angle-left")[0];
+var leftArrowSpan = document.getElementsByClassName("leftArrow")[0];
 var rightArrow = document.getElementsByClassName("fa-angle-right")[0];
+var rightArrowSpan = document.getElementsByClassName("rightArrow")[0];
 var captionText = document.getElementById("caption");
 var modalImg = document.getElementsByClassName("modal-content")[0];
 var blurredBG = document.getElementById("blurredBG");
+var imageSpan = document.getElementsByClassName("imageSpan")[0];
+var body = document.getElementsByTagName("body")[0];
+var centerImageSpan = document.getElementsByClassName("centerImage")[0];
+
 
 var images = [
   "images/colorado_1m.jpg",
@@ -58,10 +64,10 @@ var captions = [
 ];
 
 
-// function for modal
+// modal function for desktops
 function modalFunction(arg){
   modal.style.display = "block";
-  // grabs full size photo
+  // grabs med size photo
   imageSource = [arg.src.slice(0, -4), 'm', arg.src.slice(-4)].join('');
   // blurs background
   blurredBG.classList.add("bodyModalBG");
@@ -76,6 +82,106 @@ function modalFunction(arg){
   xClick();
 };
 
+
+// for mobile
+function modalFunctionMobile(arg){
+  modal.style.display = "block";
+  // hide default modal contents
+  centerImageSpan.innerHTML = "";
+  leftArrowSpan.style.display = "none";
+  rightArrowSpan.style.display = "none";
+  captionText.style.display = "none";  
+  // blurs background
+  blurredBG.classList.add("bodyModalBG");
+  // keeps track of current image
+  currentImageID = "m" + arg.id.substring(1);
+  // create container for mobile images
+  centerImageSpan.insertAdjacentHTML('beforeend', '<div id="mobileContainer"></div>');
+  var mobileContainer = document.getElementById("mobileContainer");
+  // inserts images html into container
+  for(var i = 0; i < images.length; i++){
+    mobileContainer.insertAdjacentHTML('beforeend', '<img src="' + images[i] + '" alt="' + captions[i] + '" title="Click for full-size photo in separate window" class="mobImg" id="mImg' + i + '"/>');
+    // sets default image display value to "none"
+    document.getElementsByClassName("mobImg")[i].style.display = "none";
+    // assigns click listener for full-sized photos
+    $("#mImg" + i).on("click", {id: i}, function(e){
+      var j = e.data.id; // needed to convert i to j to avoid undefined return value
+      window.open("http://www.jaylastrapes.com/photoblog/" + imagesFull[j]);
+    });
+  };
+  // displays initial selected image
+  document.getElementById(currentImageID).style.display = "inherit";
+  // swipe functionality
+  swipe();
+  // return to main page
+  xClick();
+};
+
+function swipe(){  
+  // add event listeners to images
+  for(var i = 0; i < images.length; i++){
+    document.getElementsByClassName("mobImg")[i].addEventListener('touchstart', handleTouchStart, false);        
+    document.getElementsByClassName("mobImg")[i].addEventListener('touchmove', handleTouchMove, false);
+  };
+  var xDown = null;                                                        
+  var yDown = null;
+  function getTouches(evt) {
+    return evt.touches ||         // browser API
+      evt.originalEvent.touches; // jQuery
+  };                    
+  function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];
+    xDown = firstTouch.clientX;
+    yDown = firstTouch.clientY;
+  };                                                
+  function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+      return;
+    }
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+      // left swipe
+      if ( xDiff > 0 ) {
+        // changes image display
+        for(var i = images.length-1; i > -1; i--){
+          if(("mImg"+i) === currentImageID && currentImageID !== ("mImg"+(images.length-1))){
+            document.getElementById(currentImageID).style.display = "none";
+            currentImageID = "mImg"+(i+1);
+            console.log(currentImageID);
+            document.getElementById(currentImageID).style.display = "inherit";
+          };
+        };
+      }
+      // right swipe
+      else {
+        for(var i = 0; i < images.length; i++){
+          if(("mImg"+i) === currentImageID && currentImageID !== ("mImg0")){
+            document.getElementById(currentImageID).style.display = "none";
+            currentImageID = "mImg"+(i-1);
+            console.log(currentImageID);
+            document.getElementById(currentImageID).style.display = "inherit";
+          };
+        };
+      };
+    } 
+    else {
+      // up swipe
+      if ( yDiff > 0 ) {
+      } 
+      // down swipe
+      else {
+      };
+    };
+    /* reset values */
+    xDown = null;
+    yDown = null;
+  };  
+};
+
+
 // gives ability to move through photos using the left and right arrows
 function cyclePhotos(){
   // checks if on modal page
@@ -88,22 +194,21 @@ function cyclePhotos(){
     // else {
     //   currentImage = modalImg.src.substring(34);
     // };
-    // detectswipe('img01',myfunction);
     // keeps track of current image
     currentImage = modalImg.src.substring(53);
     // hides left or right arrow if on first or last image on non-mobile pages
-    if (window.innerWidth > 500){
-      if (currentImage === images[images.length-1]){
-        rightArrow.style.visibility = "hidden";
-      }
-      else if (currentImage === images[0]){
-        leftArrow.style.visibility = "hidden";
-      }
-      else {
-        leftArrow.style.visibility = "visible";
-        rightArrow.style.visibility = "visible";
-      };
-    };
+    // if (window.outerWidth > 550){
+    //   if (currentImage === images[images.length-1]){
+    //     rightArrow.style.visibility = "hidden";
+    //   }
+    //   else if (currentImage === images[0]){
+    //     leftArrow.style.visibility = "hidden";
+    //   }
+    //   else {
+    //     leftArrow.style.visibility = "visible";
+    //     rightArrow.style.visibility = "visible";
+    //   };
+    // };
     // looks for image adress in images array
     for(var i = 0; i < images.length; i++){
       if(images[i] === currentImage){
@@ -153,7 +258,7 @@ function handleCycleImages(backOrForward){
 
 // x-button functionality in modal
 function xClick(){
-  span.onclick = function(){
+  closeBtn.onclick = function(){
     modal.style.display = "none";
     blurredBG.classList.remove("bodyModalBG");
     // removes event listener to prevent multiple windows
@@ -166,59 +271,21 @@ function openFull(){
   window.open([modalImg.src.slice(0, -5), 'F', modalImg.src.slice(-4)].join(''));
 };
 
-// function detectswipe(el,func) {
-//   swipe_det = new Object();
-//   swipe_det.sX = 0; swipe_det.sY = 0; swipe_det.eX = 0; swipe_det.eY = 0;
-//   var min_x = 30;  //min x swipe for horizontal swipe
-//   var max_x = 30;  //max x difference for vertical swipe
-//   var min_y = 50;  //min y swipe for vertical swipe
-//   var max_y = 60;  //max y difference for horizontal swipe
-//   var direc = "";
-//   ele = document.getElementById(el);
-//   ele.addEventListener('touchstart',function(e){
-//     var t = e.touches[0];
-//     swipe_det.sX = t.screenX; 
-//     swipe_det.sY = t.screenY;
-//   },false);
-//   ele.addEventListener('touchmove',function(e){
-//     e.preventDefault();
-//     var t = e.touches[0];
-//     swipe_det.eX = t.screenX; 
-//     swipe_det.eY = t.screenY;    
-//   },false);
-//   ele.addEventListener('touchend',function(e){
-//     //horizontal detection
-//     if ((((swipe_det.eX - min_x > swipe_det.sX) || (swipe_det.eX + min_x < swipe_det.sX)) && ((swipe_det.eY < swipe_det.sY + max_y) && (swipe_det.sY > swipe_det.eY - max_y) && (swipe_det.eX > 0)))) {
-//       if(swipe_det.eX > swipe_det.sX) direc = "r";
-//       else direc = "l";
-//     }
-//     //vertical detection
-//     else if ((((swipe_det.eY - min_y > swipe_det.sY) || (swipe_det.eY + min_y < swipe_det.sY)) && ((swipe_det.eX < swipe_det.sX + max_x) && (swipe_det.sX > swipe_det.eX - max_x) && (swipe_det.eY > 0)))) {
-//       if(swipe_det.eY > swipe_det.sY) direc = "d";
-//       else direc = "u";
-//     }
-
-//     if (direc != "") {
-//       if(typeof func == 'function') func(el,direc);
-//     }
-//     direc = "";
-//     swipe_det.sX = 0; swipe_det.sY = 0; swipe_det.eX = 0; swipe_det.eY = 0;
-//   },false);  
-// }
-
-// function myfunction(el,d) {
-//   alert("you swiped on element with id '"+el+"' to "+d+" direction");
-// }
-
 
 // makes photo black and white on click
 $("#images div img").on("mousedown", function(){
   $(this).addClass("clickDown");
 });
 
+// initializes main logic based on window size
 $("#images div img").on("mouseup", function(){
   $(this).removeClass("clickDown");  
-  modalFunction(this);
+  if (window.outerWidth > 550 && window.outerHeight > 450){
+    modalFunction(this);
+  }
+  else {
+    modalFunctionMobile(this);
+  }
 });
 
 
